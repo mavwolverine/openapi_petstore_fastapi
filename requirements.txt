@@ -1,1 +1,2 @@
 fastapi[all]==0.95.1
+fastapi-swagger2==0.0.2

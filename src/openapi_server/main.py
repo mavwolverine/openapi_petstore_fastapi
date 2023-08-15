@@ -13,6 +13,8 @@
 
 from fastapi import FastAPI
 
+from fastapi_swagger2 import FastAPISwagger2
+
 from openapi_server.apis.pet_api import router as PetApiRouter
 from openapi_server.apis.store_api import router as StoreApiRouter
 from openapi_server.apis.user_api import router as UserApiRouter
@@ -48,3 +50,5 @@ app = FastAPI(
 app.include_router(PetApiRouter)
 app.include_router(StoreApiRouter)
 app.include_router(UserApiRouter)
+
+FastAPISwagger2(app)

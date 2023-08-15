@@ -99,6 +99,7 @@ async def find_pets_by_status(
     summary="Finds Pets by tags",
     response_model_by_alias=True,
     operation_id="findPetsByTags",
+    deprecated=True
 )
 async def find_pets_by_tags(
     tags: List[str] = Query(None, description="Tags to filter by"),
