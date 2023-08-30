@@ -15,13 +15,13 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
+from fastapi._compat import Required
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.api_response import ApiResponse
 from openapi_server.models.pet import Pet, PetStoreStatus
 from openapi_server.security_api import get_token_petstore_auth, get_token_api_key
 
-from pydantic.fields import Required
 
 router = APIRouter()
 
