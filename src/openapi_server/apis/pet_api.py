@@ -15,7 +15,12 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from fastapi._compat import Required
+
+try:
+    from fastapi._compat import RequiredParam
+except ImportError:
+    # FastAPI < 0.115.1
+    from fastapi._compat import Required as RequiredParam
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.api_response import ApiResponse
@@ -38,7 +43,7 @@ router = APIRouter()
     operation_id="addPet"
 )
 async def add_pet(
-    pet: Pet = Body(Required, description="Create a new pet in the store"),
+    pet: Pet = Body(RequiredParam, description="Create a new pet in the store"),
     token_petstore_auth: TokenModel = Security(
         get_token_petstore_auth, scopes=["write:pets", "read:pets"]
     ),
@@ -150,7 +155,7 @@ async def get_pet_by_id(
     operation_id="updatePet"
 )
 async def update_pet(
-    pet: Pet = Body(Required, description="Update an existent pet in the store"),
+    pet: Pet = Body(RequiredParam, description="Update an existent pet in the store"),
     token_petstore_auth: TokenModel = Security(
         get_token_petstore_auth, scopes=["write:pets", "read:pets"]
     ),
