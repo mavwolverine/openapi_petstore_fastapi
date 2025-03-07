@@ -11,7 +11,16 @@ def test_create_user(client: TestClient):
 
     Create user
     """
-    user = {"first_name":"John","last_name":"James","password":"12345","user_status":1,"phone":"12345","id":10,"email":"john@email.com","username":"theUser"}
+    user = {
+        "first_name": "John",
+        "last_name": "James",
+        "password": "12345",
+        "user_status": 1,
+        "phone": "12345",
+        "id": 10,
+        "email": "john@email.com",
+        "username": "theUser"
+    }
 
     headers = {
     }
@@ -23,7 +32,7 @@ def test_create_user(client: TestClient):
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_create_users_with_list_input(client: TestClient):
@@ -109,14 +118,13 @@ def test_logout_user(client: TestClient):
 
     headers = {
     }
-    response = client.request(
-        "GET",
+    response = client.get(
         "/user/logout",
         headers=headers,
     )
 
     # uncomment below to assert the status code of the HTTP response
-    #assert response.status_code == 200
+    # assert response.status_code == 200
 
 
 def test_update_user(client: TestClient):

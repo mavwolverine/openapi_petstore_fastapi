@@ -76,9 +76,24 @@ def get_token_api_key(
 
 
     :type token_api_key_header: str
-    :return: Information attached to provided api_key or None if api_key is invalid or does not allow access to called API
+    :return: Information attached to provided api_key or None if api_key is invalid
+        or does not allow access to called API
     :rtype: TokenModel | None
     """
 
     ...
 
+
+def get_http_bearer_auth(
+    token: str = Security(HTTPBearer(auto_error=False))
+) -> TokenModel:
+    """_summary_
+
+    Args:
+        token (str, optional): _description_. Defaults to Security(HTTPBearer(auto_error=False)).
+
+    Returns:
+        TokenModel: _description_
+    """
+
+    ...

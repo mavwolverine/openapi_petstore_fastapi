@@ -18,7 +18,7 @@ from fastapi import (  # noqa: F401
 
 from openapi_server.models.extra_models import TokenModel  # noqa: F401
 from openapi_server.models.order import Order
-from openapi_server.security_api import get_token_api_key
+from openapi_server.security_api import get_token_api_key, get_http_bearer_auth
 
 router = APIRouter()
 
@@ -92,6 +92,9 @@ async def get_order_by_id(
 )
 async def place_order(
     order: Order = Body(None, description=""),
+    auth_bearer_key: TokenModel = Security(
+        get_http_bearer_auth
+    ),
 ) -> Order:
     """Place a new order in the store"""
     ...

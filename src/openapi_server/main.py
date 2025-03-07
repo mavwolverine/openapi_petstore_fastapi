@@ -12,6 +12,7 @@
 
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_swagger2 import FastAPISwagger2
 
@@ -44,11 +45,52 @@ app = FastAPI(
             "name": "user",
             "description": "Operations about user"
         }
-    ]
+    ],
 )
+
+print(app.routes)
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+print(app.routes)
 
 app.include_router(PetApiRouter)
 app.include_router(StoreApiRouter)
 app.include_router(UserApiRouter)
 
-FastAPISwagger2(app)
+FastAPISwagger2(
+    app,
+    swagger2_tags=[
+        {
+            "name": "pet",
+            "description": "Everything about your Pets",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": 'http://swagger.io',
+            }
+        },
+        {
+            "name": "store",
+            "description": "Access to Petstore orders",
+            "externalDocs": {
+                "description": "Find out more about our store",
+                "url": 'http://swagger.io',
+            }
+        },
+        {
+            "name": "user",
+            "description": "Operations about user"
+        }
+    ]
+)
