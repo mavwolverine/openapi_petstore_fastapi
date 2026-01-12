@@ -228,16 +228,16 @@
           "type": "string",
           "x-nullable": true
         },
-        "username": {
-          "example": "theUser",
-          "title": "Username",
-          "type": "string",
-          "x-nullable": true
-        },
         "userStatus": {
           "example": 1,
           "title": "Userstatus",
           "type": "integer",
+          "x-nullable": true
+        },
+        "username": {
+          "example": "theUser",
+          "title": "Username",
+          "type": "string",
           "x-nullable": true
         }
       },
@@ -375,6 +375,118 @@
           }
         ],
         "summary": "Update an existing pet",
+        "tags": [
+          "pet"
+        ]
+      }
+    },
+    "/pet/findByStatus": {
+      "get": {
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "findPetsByStatus",
+        "parameters": [
+          {
+            "default": "available",
+            "description": "Status values that need to be considered for filter",
+            "enum": [
+              "available",
+              "pending",
+              "sold"
+            ],
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Pet"
+              },
+              "title": "Response 200 Findpetsbystatus",
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "422": {
+            "description": "Validation Error",
+            "schema": {
+              "$ref": "#/definitions/HTTPValidationError"
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth_implicit": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
+        "summary": "Finds Pets by status",
+        "tags": [
+          "pet"
+        ]
+      }
+    },
+    "/pet/findByTags": {
+      "get": {
+        "deprecated": true,
+        "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
+        "operationId": "findPetsByTags",
+        "parameters": [
+          {
+            "description": "Tags to filter by",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "tags",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Pet"
+              },
+              "title": "Response 200 Findpetsbytags",
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          },
+          "422": {
+            "description": "Validation Error",
+            "schema": {
+              "$ref": "#/definitions/HTTPValidationError"
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth_implicit": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
+        "summary": "Finds Pets by tags",
         "tags": [
           "pet"
         ]
@@ -598,118 +710,6 @@
         ]
       }
     },
-    "/pet/findByStatus": {
-      "get": {
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "findPetsByStatus",
-        "parameters": [
-          {
-            "default": "available",
-            "description": "Status values that need to be considered for filter",
-            "enum": [
-              "available",
-              "pending",
-              "sold"
-            ],
-            "in": "query",
-            "name": "status",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "items": {
-                "$ref": "#/definitions/Pet"
-              },
-              "title": "Response 200 Findpetsbystatus",
-              "type": "array"
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
-          },
-          "422": {
-            "description": "Validation Error",
-            "schema": {
-              "$ref": "#/definitions/HTTPValidationError"
-            }
-          }
-        },
-        "security": [
-          {
-            "petstore_auth_implicit": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ],
-        "summary": "Finds Pets by status",
-        "tags": [
-          "pet"
-        ]
-      }
-    },
-    "/pet/findByTags": {
-      "get": {
-        "deprecated": true,
-        "description": "Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.",
-        "operationId": "findPetsByTags",
-        "parameters": [
-          {
-            "description": "Tags to filter by",
-            "in": "query",
-            "items": {
-              "type": "string"
-            },
-            "name": "tags",
-            "required": false,
-            "type": "array"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "items": {
-                "$ref": "#/definitions/Pet"
-              },
-              "title": "Response 200 Findpetsbytags",
-              "type": "array"
-            }
-          },
-          "400": {
-            "description": "Invalid tag value"
-          },
-          "422": {
-            "description": "Validation Error",
-            "schema": {
-              "$ref": "#/definitions/HTTPValidationError"
-            }
-          }
-        },
-        "security": [
-          {
-            "petstore_auth_implicit": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ],
-        "summary": "Finds Pets by tags",
-        "tags": [
-          "pet"
-        ]
-      }
-    },
     "/store/inventory": {
       "get": {
         "description": "Returns a map of status codes to quantities",
@@ -904,6 +904,123 @@
         ]
       }
     },
+    "/user/createWithList": {
+      "post": {
+        "description": "Creates list of users with given input array",
+        "operationId": "createUsersWithListInput",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "description": "",
+              "items": {
+                "$ref": "#/definitions/User"
+              },
+              "title": "User",
+              "type": "array"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "schema": {
+              "$ref": "#/definitions/HTTPValidationError"
+            }
+          }
+        },
+        "summary": "Creates list of users with given input array",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/login": {
+      "get": {
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "description": "The user name for login",
+            "in": "query",
+            "name": "username",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The password for login in clear text",
+            "in": "query",
+            "name": "password",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "X-Expires-After": {
+                "description": "date in UTC when token expires",
+                "format": "date-time",
+                "type": "string"
+              },
+              "X-Rate-Limit": {
+                "description": "calls per hour allowed by the user",
+                "type": "integer"
+              }
+            },
+            "schema": {
+              "title": "Response 200 Loginuser",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          },
+          "422": {
+            "description": "Validation Error",
+            "schema": {
+              "$ref": "#/definitions/HTTPValidationError"
+            }
+          }
+        },
+        "summary": "Logs user into the system",
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "operationId": "logoutUser",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {}
+          }
+        },
+        "summary": "Logs out current logged in user session",
+        "tags": [
+          "user"
+        ]
+      }
+    },
     "/user/{username}": {
       "delete": {
         "description": "This can only be done by the logged in user.",
@@ -1023,134 +1140,17 @@
           "user"
         ]
       }
-    },
-    "/user/createWithList": {
-      "post": {
-        "description": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "user",
-            "required": false,
-            "schema": {
-              "description": "",
-              "items": {
-                "$ref": "#/definitions/User"
-              },
-              "title": "User",
-              "type": "array"
-            }
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "schema": {
-              "$ref": "#/definitions/HTTPValidationError"
-            }
-          }
-        },
-        "summary": "Creates list of users with given input array",
-        "tags": [
-          "user"
-        ]
-      }
-    },
-    "/user/login": {
-      "get": {
-        "operationId": "loginUser",
-        "parameters": [
-          {
-            "description": "The user name for login",
-            "in": "query",
-            "name": "username",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "description": "The password for login in clear text",
-            "in": "query",
-            "name": "password",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "headers": {
-              "X-Expires-After": {
-                "description": "date in UTC when token expires",
-                "format": "date-time",
-                "type": "string"
-              },
-              "X-Rate-Limit": {
-                "description": "calls per hour allowed by the user",
-                "type": "integer"
-              }
-            },
-            "schema": {
-              "title": "Response 200 Loginuser",
-              "type": "string"
-            }
-          },
-          "400": {
-            "description": "Invalid username/password supplied"
-          },
-          "422": {
-            "description": "Validation Error",
-            "schema": {
-              "$ref": "#/definitions/HTTPValidationError"
-            }
-          }
-        },
-        "summary": "Logs user into the system",
-        "tags": [
-          "user"
-        ]
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "operationId": "logoutUser",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {}
-          }
-        },
-        "summary": "Logs out current logged in user session",
-        "tags": [
-          "user"
-        ]
-      }
     }
   },
   "securityDefinitions": {
-    "api_key": {
-      "in": "header",
-      "name": "api_key",
-      "type": "apiKey"
-    },
     "HTTPBearer": {
       "in": "header",
       "name": "Authorization",
+      "type": "apiKey"
+    },
+    "api_key": {
+      "in": "header",
+      "name": "api_key",
       "type": "apiKey"
     },
     "petstore_auth_implicit": {
