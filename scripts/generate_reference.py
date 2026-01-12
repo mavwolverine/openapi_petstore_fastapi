@@ -7,10 +7,10 @@ from pathlib import Path
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent
-app_path = project_root / "src" / "openapi_server"
+app_path = project_root / "src"
 sys.path.insert(0, str(app_path))
 
-from main import app
+from openapi_server.main import app
 
 
 def main():
