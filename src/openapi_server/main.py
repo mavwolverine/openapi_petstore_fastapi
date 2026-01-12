@@ -48,8 +48,6 @@ app = FastAPI(
     ],
 )
 
-print(app.routes)
-
 origins = [
     "http://localhost",
     "http://localhost:8080",
@@ -62,8 +60,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-print(app.routes)
 
 app.include_router(PetApiRouter)
 app.include_router(StoreApiRouter)
